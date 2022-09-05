@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+export default function App() {
+  const [input, setInput] = useState();
+  const [list, setList] = useState([]);
+
+  const add = () =>{
+    let coisasDoInput ={
+      value: input,
+      id: Date.now(),
+      status: false
+    }
+
+    setList([...list, coisasDoInput])
+    setInput("")
+  }
+
+  function DeleteTask(Rastreador){
+     const ListaFiltrada = list.filter(item => item.id !==  Rastreador)
+     setList(ListaFiltrada)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>To Do List</h1>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <input value={input} onChange={(e) => { setInput(e.target.value); }}/> 
+        <button onClick={() => {add()}}>+</button>
+      </form>
+      <ul>
+        {list.map((item) => (
+          <li>
+          {item.value} 
+          <button onClick={() =>{DeleteTask(item.id)}}>x</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
-export default App;
